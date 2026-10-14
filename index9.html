@@ -124,18 +124,20 @@
       var script = document.createElement("script");
       script.src = loaderUrl;
       script.onload = () => {
-        createUnityInstance(canvas, config, (progress) => {
-  progressBarFull.style.width = 100 * progress + "%";
+  createUnityInstance(canvas, config, (progress) => {
+    progressBarFull.style.width = 100 * progress + "%";
 
-  // Ocultar el texto cuando el progreso llegue al 100%
-  if (progress >= 1 && loadingText) {
-    loadingText.style.setProperty("display", "none", "important");
-          }).then((unityInstance) => {
-            loadingBar.style.display = "none";
-          }).catch((message) => {
-            console.error(message);
-          });
-      };
+    // Ocultar el texto cuando el progreso llegue al 100%
+    if (progress >= 1 && loadingText) {
+      loadingText.style.setProperty("display", "none", "important");
+    }
+  }).then((unityInstance) => {
+    loadingBar.style.display = "none";
+    if (loadingText) loadingText.remove();   // <- lo saca del DOM por si acaso
+  }).catch((message) => {
+    console.error(message);
+  });
+};
       document.body.appendChild(script);
     })();
     </script>
